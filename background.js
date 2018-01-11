@@ -17,7 +17,9 @@ chrome.tabs.onUpdated.addListener(function tabUpdateListener(id, status, info) {
         //Audio AD investigating
         if (info.audible && info.title === "Реклама") {
             console.log('Catched!')
-            chrome.tabs.executeScript(tabId, {code : "console.warn('Обнаружена реклама в аудиозаписях', getAudioPlayer().pause()"});
+            chrome.tabs.executeScript(tabId, {
+                code : "console.warn('Обнаружена реклама в аудиозаписях', getAudioPlayer().pause()"
+            });
             console.log(info)
         }
     }
@@ -32,9 +34,9 @@ function isVkTab(url) {
 }
 
 function removeAdPost(tabId) {
-    chrome.tabs.executeScript(tabId, {file : "post.js"});
+    chrome.tabs.executeScript(tabId, {file : "scripts/post.js"});
 };
 
 function removeAdSidebar(tabId) {
-    chrome.tabs.executeScript(tabId, {file : "sidebar.js"});
+    chrome.tabs.executeScript(tabId, {file : "scripts/sidebar.js"});
 };

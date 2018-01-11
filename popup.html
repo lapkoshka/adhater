@@ -3,73 +3,7 @@
   <head>
     <title>AD Hater</title>
     <meta charset="utf-8">
-    <!-- <link rel="stylesheet" type="text/css" href="style/popup.css"> -->
-    <style>
-    body {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
-    align-items: center;
-    -webkit-box-pack: center;
-    -ms-flex-pack: center;
-    justify-content: center;
-  }
-
-  .container {
-    min-width: 150px;
-  }
-
-  .radio {
-    margin: 0.5rem;
-  }
-
-  .radio input[type="radio"] {
-    position: absolute;
-    opacity: 0;
-  }
-
-  .radio input[type="radio"] + .radio-label:before {
-    content: '';
-    background: #f4f4f4;
-    border-radius: 100%;
-    border: 1px solid #b4b4b4;
-    display: inline-block;
-    width: 1.4em;
-    height: 1.4em;
-    position: relative;
-    top: -0.2em;
-    margin-right: 1em;
-    vertical-align: top;
-    cursor: pointer;
-    text-align: center;
-    -webkit-transition: all 250ms ease;
-    transition: all 250ms ease;
-  }
-
-  .radio input[type="radio"]:checked + .radio-label:before {
-    background-color: #3197EE;
-    -webkit-box-shadow: inset 0 0 0 4px #f4f4f4;
-            box-shadow: inset 0 0 0 4px #f4f4f4;
-  }
-
-  .radio input[type="radio"]:focus + .radio-label:before {
-    outline: none;
-    border-color: #3197EE;
-  }
-
-  .radio input[type="radio"]:disabled + .radio-label:before {
-    -webkit-box-shadow: inset 0 0 0 4px #f4f4f4;
-            box-shadow: inset 0 0 0 4px #f4f4f4;
-    border-color: #b4b4b4;
-    background: #b4b4b4;
-  }
-
-  .radio input[type="radio"] + .radio-label:empty:before {
-    margin-right: 0;
-  }
-    </style>
+    <link rel="stylesheet" type="text/css" href="styles/popup.css">
   </head>
   <body>
     <div class="container">
@@ -84,10 +18,6 @@
           <label  for="radio-show" class="radio-label">Показать рекламу</label>
         </div>
       </form>
-      <!-- <div class="radio">
-        <input id="radio-3" name="radio" type="radio" disabled>
-        <label for="radio-3" class="radio-label">Disabled</label>
-      </div> -->
     </div>
   </body>
   <script src="popup.js"></script>

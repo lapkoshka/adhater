@@ -1,12 +1,12 @@
 {
   "name": "AD Hater",
   "description": "Block advertising posts and sidebars",
-  "version": "1.01",
+  "version": "1.02",
   "icons": {
-    "16": "16x16.png",
-    "32": "32x32.png",
-    "48": "48x48.png",
-    "144": "144x144.png"
+    "16": "favicons/16x16.png",
+    "32": "favicons/32x32.png",
+    "48": "favicons/48x48.png",
+    "144": "favicons/144x144.png"
   },
 
   "permissions": [
@@ -19,5 +19,16 @@
     "background": {
     "scripts": ["background.js"]
   },
+  "content_scripts": [
+    {
+      "matches": ["https://www.pornhub.com/*"],
+      "css": ["styles/phcontainer.css"]
+    },
+    {
+      "matches": ["https://vk.com/*"],
+      "js": ["scripts/analytics.js"],
+      "run_at": "document_start"
+    }
+  ],
   "manifest_version": 2
 }

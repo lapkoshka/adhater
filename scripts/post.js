@@ -54,4 +54,5 @@ document.addEventListener('scroll', evt => {
 
     window.adHater.lastScrollHeight = document.body.scrollHeight
     postSearcher.findAndRemove();
-});;
+});
+
