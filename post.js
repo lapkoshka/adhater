@@ -1,36 +1,37 @@
-//i think array methods are good for dom nodes
+//Это удобней чем постоянно писать Array.from()
 NodeList.prototype.filter = Array.prototype.filter;
 NodeList.prototype.forEach = Array.prototype.forEach;
 
-
 adClasses = ['.ads_ads_news_wrap','._ads_promoted_post_data_w'];
 
-function findAndRemove() {
-    const adPosts = [];
+postSearcher = {
+    getAdsPostsByClassName: classNames => {
+        return classNames
+            .reduce((map, className) => {
+                document.querySelectorAll(className).forEach(element => map.push(element));
+                return map;
+            },[])
+            .filter(post => post)
+            .map(post => post.parentElement);
+    },
 
-    const adPostsByClassName = 
-        adClasses.map(className => {
-            return document.querySelector(className);
-        }).filter(post => {
-            return post;
-        });
-
-    if (adPostsByClassName.length) {
-        adPostsByClassName.forEach(post => {
-            adPosts.push(post.parentElement);
-        });
-    } else {
-        const allPostsInNewsFeed = document.querySelectorAll('.feed_row');
-        adPosts = allPostsInNewsFeed.filter(post => {
-            const containsAdBlockUid = post.childNodes[0].dataset.adBlockUid;
-            return containsAdBlockUid ? true : false;
-        });
+    tryToFindByDataset: () => {
+        const allPostsInNewsFeed = document.querySelector('.feed_row');
+        //У рекламных постов есть dataset в котором есть данные о adblock
+        return allPostsInNewsFeed.filter(post => post.childNodes[0].dataset.adBlockUid);
+    },
+    
+    findAndRemove: () => {
+        adPosts = postSearcher.getAdsPostsByClassName(adClasses);
+        if (!adPosts.length) {
+            adPosts = postSearcher.tryToFindByDataset();
+        }
+    
+        adPosts.forEach(post => {
+            makeUpElement(post.firstChild);
+        })
     }
-
-    adPosts.forEach(post => {
-        makeUpElement(post.firstChild);
-    })
-}
+};
 
 function makeUpElement(element) {
     if (!element) {
@@ -40,4 +41,17 @@ function makeUpElement(element) {
     element.querySelector('._post_content').style.display = 'none';
 };
 
-findAndRemove();
+postSearcher.findAndRemove();
+
+window.adHater = {
+    lastScrollHeight: document.body.scrollHeight
+};
+
+document.addEventListener('scroll', evt => {
+	if (window.adHater.lastScrollHeight === document.body.scrollHeight) {
+        return;
+    }
+
+    window.adHater.lastScrollHeight = document.body.scrollHeight
+    postSearcher.findAndRemove();
+});;

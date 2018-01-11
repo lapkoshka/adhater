@@ -18,8 +18,8 @@ chrome.tabs.onUpdated.addListener(function tabUpdateListener(id, status, info) {
         if (info.audible && info.title === "Реклама") {
             console.log('Catched!')
             chrome.tabs.executeScript(tabId, {code : "console.warn('Обнаружена реклама в аудиозаписях', getAudioPlayer().pause()"});
+            console.log(info)
         }
-        console.log(info)
     }
 });
 
