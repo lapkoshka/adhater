@@ -12,7 +12,7 @@ chrome.tabs.onUpdated.addListener(function tabUpdateListener(id, status, info) {
     }
     const isVkPage = isVkTab(info.url) && status.status === 'complete';
     if (isVkPage) {
-        //removeAdSidebar(id);
+        removeAdSidebar(id);
 
         //Audio AD investigating
         if (info.audible && info.title === "Реклама") {
