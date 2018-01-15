@@ -1,29 +1,42 @@
-function addXMLRequestCallback(callback){
-    var oldSend, i;
-    if( XMLHttpRequest.callbacks ) {
-        // we've already overridden send() so just add the callback
-        XMLHttpRequest.callbacks.push( callback );
-    } else {
-        // create a callback queue
-        XMLHttpRequest.callbacks = [callback];
-        // store the native send()
-        oldSend = XMLHttpRequest.prototype.send;
-        // override the native send()
-        XMLHttpRequest.prototype.send = function(){
-            // process the callback queue
-            // the xhr instance is passed into each callback but seems pretty useless
-            // you can't tell what its destination is or call abort() without an error
-            // so only really good for logging that a request has happened
-            // I could be wrong, I hope so...
-            // EDIT: I suppose you could override the onreadystatechange handler though
-            for( i = 0; i < XMLHttpRequest.callbacks.length; i++ ) {
-                XMLHttpRequest.callbacks[i]( this );
-            }
-            // call the native send()
-            oldSend.apply(this, arguments);
-        }
-    }
-}
+// const blockList = ['ad.mail.ru'];
 
-// e.g.
-addXMLRequestCallback(xhr => console.log(xhr));
+// function addXMLRequestCallback(callback){
+//     if (XMLHttpRequest.callbacks) {
+//         XMLHttpRequest.callbacks.push(callback);
+//     } else {
+//         XMLHttpRequest.callbacks = [callback];
+//         const nativeOpen = XMLHttpRequest.prototype.open;
+//         const nativeSend = XMLHttpRequest.prototype.send;
+//         // override
+//         XMLHttpRequest.prototype.open = function(){
+//             XMLHttpRequest.callbacks.forEach((callback, index) => {
+//                 callback(this);
+//             });
+//             nativeOpen.apply(this, arguments);
+//         }
+
+//         // override
+//         // XMLHttpRequest.prototype.send = function(){
+//         //     XMLHttpRequest.callbacks.forEach((callback, index) => {
+//         //         callback(this);
+//         //     });
+//         //     nativeSend.apply(this, arguments);
+//         // }
+//     }
+// }
+// addXMLRequestCallback(xhr => {
+//     // console.log(xhr.responseURL);
+//     // xhr.abort();
+//     // console.log(/vk/g.test(xhr.responseURL));
+//     xhr.addEventListener('progress', evt => {
+//         const isAdURL = blockList.some(url => {
+//             const regExp = new RegExp(url, 'g');
+//             return regExp.test(evt.currentTarget.responseURL);
+//         });
+//         console.log(evt.currentTarget.responseURL)
+//         console.log(isAdURL)
+//         // if (isAdURL) {
+//         //     evt.currentTarget.abort();
+//         // }
+//     });
+// });

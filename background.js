@@ -42,3 +42,7 @@ function removeAdPost(tabId) {
 function removeAdSidebar(tabId) {
     chrome.tabs.executeScript(tabId, {file : "scripts/sidebar.js"});
 };
+
+// chrome.webRequest.onBeforeRequest.addListener(evt => {
+//     console.log(arguments);
+// })
