@@ -23,6 +23,11 @@
     {
       "matches": ["https://www.pornhub.com/*"],
       "css": ["styles/phcontainer.css"]
+    },
+    {
+      "matches": ["https://vk.com/*"],
+      "js": ["scripts/inject.js"],
+      "run_at": "document_start"
     }
   ],
   "manifest_version": 2
