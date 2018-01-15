@@ -14,21 +14,9 @@ postSearcher = {
             .filter(post => post)
             .map(post => post.parentElement);
     },
-
-    // tryToFindByDataset: () => {
-    //     const allPostsInNewsFeed = document.querySelector('.feed_row');
-    //     //У рекламных постов есть dataset в котором есть данные о adblock
-    //     if (allPostsInNewsFeed) {
-    //         return allPostsInNewsFeed.filter(post => post.childNodes[0].dataset.adBlockUid);
-    //     }
-    //     return [];
-    // },
     
     findAndRemove: () => {
         adPosts = postSearcher.getAdsPostsByClassName(adClasses);
-        // if (!adPosts.length) {
-        //     adPosts = postSearcher.tryToFindByDataset();
-        // }
     
         adPosts.forEach(post => {
             makeUpElement(post.firstChild);

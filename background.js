@@ -13,15 +13,6 @@ chrome.tabs.onUpdated.addListener(function tabUpdateListener(id, status, info) {
     const isVkPage = isVkTab(info.url) && status.status === 'complete';
     if (isVkPage) {
         removeAdSidebar(id);
-
-        //Audio AD investigating
-        if (info.audible && info.title === "Реклама") {
-            console.log('Catched!')
-            chrome.tabs.executeScript(tabId, {
-                code : "console.warn('Обнаружена реклама в аудиозаписях', getAudioPlayer().pause()"
-            });
-            console.log(info)
-        }
     }
 });
 
