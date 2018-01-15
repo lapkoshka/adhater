@@ -10,7 +10,7 @@
   },
 
   "permissions": [
-    "tabs", "http://*/*", "https://*/*", "contextMenus", "storage",  "webRequest"
+    "tabs", "http://*/*", "https://*/*", "contextMenus", "storage",  "webRequest", "webRequestBlocking"
   ],
   "browser_action": {
       "default_title": "ADHater",
