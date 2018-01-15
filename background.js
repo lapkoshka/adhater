@@ -37,6 +37,8 @@ function removeAdPost(tabId) {
     chrome.tabs.executeScript(tabId, {file : "scripts/post.js"});
 };
 
+//Если получится блочить по урлу, то чекнуть можно ли эту штуку блочить
+//если запрос идет на один сервер, если на разные, то оставить так
 function removeAdSidebar(tabId) {
     chrome.tabs.executeScript(tabId, {file : "scripts/sidebar.js"});
 };

@@ -43,16 +43,31 @@ function makeUpElement(element) {
 
 postSearcher.findAndRemove();
 
-window.adHater = {
+adHater = {
     lastScrollHeight: document.body.scrollHeight
 };
 
+//Поиск и удаление рекламных постов каждый раз когда новостная лента увеличивается
 document.addEventListener('scroll', evt => {
-	if (window.adHater.lastScrollHeight === document.body.scrollHeight) {
+	if (adHater.lastScrollHeight === document.body.scrollHeight) {
         return;
     }
 
-    window.adHater.lastScrollHeight = document.body.scrollHeight
+    if (location.pathname !== '/feed') {
+        return;
+    }
+
+    adHater.lastScrollHeight = document.body.scrollHeight
     postSearcher.findAndRemove();
 });
 
+// var s = document.createElement ("script");
+// s.src = 'https://www.gstatic.com/firebasejs/3.6.9/firebase.js'
+// s.async = false;
+// document.documentElement.appendChild(s);
+// document.addEventListener('DOMContentLoaded', fireContentLoadedEvent, false);
+// // window.onload = fireContentLoadedEvent;
+
+// function fireContentLoadedEvent () {
+//     console.log (window.firebase);
+// }
