@@ -1,7 +1,7 @@
 {
   "name": "AD Hater",
   "description": "Block advertising posts and sidebars",
-  "version": "1.03",
+  "version": "1.04",
   "icons": {
     "16": "favicons/16x16.png",
     "32": "favicons/32x32.png",
@@ -26,10 +26,13 @@
     },
     {
       "matches": ["https://vk.com/*"],
-      "js": ["scripts/inject.js"],
-      "run_at": "document_end"
+      "js": ["scripts/inject.js", "scripts/sidebar.js"]
+    },
+    {
+      "matches": ["https://vk.com/feed", "https://m.vk.com/feed"],
+      "js": ["scripts/post.js"]
     }
   ],
-  "web_accessible_resources": ["scripts/xhrsniffer.js"],
+  "web_accessible_resources": ["scripts/analytics.js"],
   "manifest_version": 2
 }

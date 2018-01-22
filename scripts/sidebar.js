@@ -1,5 +1,3 @@
-findAndRemove();
-
 function findAndRemove() {
     const adSideBar = document.querySelector('#ads_left');
     makeUpElement(adSideBar);
@@ -11,3 +9,5 @@ function makeUpElement(element) {
     }
     element.style.display = 'none';
 }
+
+findAndRemove();
