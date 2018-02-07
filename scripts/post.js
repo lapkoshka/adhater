@@ -50,6 +50,7 @@ postPunisher = {
 };
 
 postPunisher.findAndRemove();
+setTimeout(postPunisher.findAndRemove, 1000);
 lastScrollHeight = document.body.scrollHeight
 
 //Поиск и удаление рекламных постов каждый раз когда новостная лента увеличивается

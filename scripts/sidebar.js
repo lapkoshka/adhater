@@ -11,3 +11,5 @@ function makeUpElement(element) {
 }
 
 findAndRemove();
+//сук не могу отловить момент и причину  почему иногда не отрабатывает
+setTimeout(findAndRemove, 1000);
