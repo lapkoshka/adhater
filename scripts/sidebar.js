@@ -4,12 +4,10 @@ function findAndRemove() {
 };
 
 function makeUpElement(element) {
-    if (!makeUpElement) {
+    if (!element) {
         return;
     }
     element.style.display = 'none';
 }
 
 findAndRemove();
-//сук не могу отловить момент и причину  почему иногда не отрабатывает
-setTimeout(findAndRemove, 1000);
