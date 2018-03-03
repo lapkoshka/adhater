@@ -1,7 +1,7 @@
 {
   "name": "AD Hater",
   "description": "Block advertising posts and sidebars",
-  "version": "1.06",
+  "version": "1.08",
   "icons": {
     "16": "favicons/16x16.png",
     "32": "favicons/32x32.png",

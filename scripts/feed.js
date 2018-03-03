@@ -1,14 +1,15 @@
 NodeList.prototype.filter = Array.prototype.filter;
 NodeList.prototype.forEach = Array.prototype.forEach;
 
-isMobileVersion = /m\.vk\.com/.test(location.href);
+IS_MOBILE = /m\.vk\.com/.test(location.href);
+IS_FEED_PAGE = /vk\.com\/feed/.test(location.href)
 
-adClasses = [
+AD_CLASSES = [
     '.ads_ads_news_wrap',
     '._ads_promoted_post_data_w'
 ];
 
-adMarks = [
+AD_MARKS = [
     '.wall_marked_as_ads',
     '.ads_mark'
 ];
@@ -16,9 +17,9 @@ adMarks = [
 postPunisher = {
         
     findAndRemove: () => {
-        const feedPosts = postPunisher.getAdsPostsByClassName(adClasses);
+        const feedPosts = postPunisher.getAdsPostsByClassName(AD_CLASSES);
         feedPosts.forEach(post => {
-            if (isMobileVersion) {
+            if (IS_MOBILE || !IS_FEED_PAGE) {
                 postPunisher.makeUpElement(post);
                 return;
             }
@@ -44,7 +45,7 @@ postPunisher = {
             },[])
             .filter(post => post);
 
-        if (isMobileVersion) {
+        if (IS_MOBILE || !IS_FEED_PAGE) {
             return elements;
         }
         return elements.map(post => post.parentElement);
@@ -52,12 +53,12 @@ postPunisher = {
 
     /** @return {Array<Element>} */
     getAdsPostsApprovedByGroupOwner: function() {
-        const selector = isMobileVersion ? '.wall_posts' : '#page_wall_posts'
+        const selector = IS_MOBILE ? '.wall_posts' : '#page_wall_posts'
         const nodeListWithResults = document.querySelectorAll(selector);
         if (nodeListWithResults.length) {
             nodeListWithResults
             return Array.from(nodeListWithResults[0].children).filter(post => {
-                return Boolean(adMarks.some(mark => post.querySelector(mark)));
+                return Boolean(AD_MARKS.some(mark => post.querySelector(mark)));
             });
         } else {
             return [];
