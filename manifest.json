@@ -1,7 +1,7 @@
 {
-  "name": "AD Hater",
-  "description": "Block advertising posts and sidebars",
-  "version": "1.06",
+  "name": "Lapka VK",
+  "description": "Плюшечки для завсегдатаев соцсети",
+  "version": "1.09",
   "icons": {
     "16": "favicons/16x16.png",
     "32": "favicons/32x32.png",
@@ -13,22 +13,11 @@
     "tabs", "http://*/*", "https://*/*", "contextMenus", "storage",  "webRequest", "webRequestBlocking"
   ],
   "browser_action": {
-      "default_title": "ADHater",
+      "default_title": "Lapka VK",
       "default_popup": "popup.html"
   },
     "background": {
     "scripts": ["background.js"]
   },
-  "content_scripts": [
-    {
-      "matches": ["https://www.pornhub.com/*"],
-      "css": ["styles/phcontainer.css"]
-    },
-    {
-      "matches": ["https://vk.com/*"],
-      "js": ["scripts/service.js"]
-    }
-  ],
-  "web_accessible_resources": ["scripts/vkids.js"],
   "manifest_version": 2
 }
