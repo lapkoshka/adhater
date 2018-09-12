@@ -9,7 +9,8 @@
 - реклама в видеозаписях
 
 **Как скачать музыку с ВК?**
-Расширение Lapka VK позволяет это сделать.
+
+C расширением Lapka VK можно качать музло.
 
 
 ## [Установить](https://chrome.google.com/webstore/detail/ad-hater/gljnhpjldjmagbklkfpllcbkhpbpggbk)
