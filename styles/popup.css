@@ -25,7 +25,7 @@ a {
   text-align: right;
 }
 
-.audio-list {
+/* .audio-list {
   margin-top: 20px;
   display: flex;
   flex-direction: column;
@@ -45,4 +45,4 @@ a {
 
 audio {
   margin-top: 5px;
-}
+} */

@@ -1,7 +1,7 @@
 {
-  "name": "Lapka VK",
-  "description": "Плюшечки для завсегдатаев соцсети",
-  "version": "1.09",
+  "name": "VK Freeloader",
+  "description": "Блокировка рекламы и загрузка музыки в ВК",
+  "version": "2.0",
   "icons": {
     "16": "favicons/16x16.png",
     "32": "favicons/32x32.png",
@@ -10,14 +10,26 @@
   },
 
   "permissions": [
-    "tabs", "http://*/*", "https://*/*", "contextMenus", "storage",  "webRequest", "webRequestBlocking"
+    "tabs", "http://*/*", "https://*/*", "contextMenus", "storage",  "webRequest", "webRequestBlocking", "downloads"
   ],
   "browser_action": {
-      "default_title": "Lapka VK",
+      "default_title": "VK Freeloader",
       "default_popup": "popup.html"
   },
     "background": {
-    "scripts": ["background.js"]
+    "scripts": ["background.js", "scripts/runtime.audiodownload.js"]
   },
+  "content_scripts": [
+    {
+      "matches": ["https://vk.com/*", "https://m.vk.com/*"],
+      "css": ["styles/elements.css"],
+      "js": ["scripts/vk.dowloadbutton.js"],
+      "run_at": "document_end"
+    }
+  ],
+  "web_accessible_resources": [
+    "styles/elements.css",
+    "scripts/vk.dowloadbutton.js"
+  ],
   "manifest_version": 2
 }

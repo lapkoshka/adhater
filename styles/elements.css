@@ -1,0 +1,30 @@
+#ads_left,
+.wall_marked_as_ads,
+.ads_mark,
+._ads_promoted_post_data_w,
+.ads_ads_news_wrap {
+    display: none;
+}
+
+.audio-ext-button-download {
+    border: none;
+    background: none;
+    font-family: -apple-system,BlinkMacSystemFont,Roboto,Helvetica Neue,sans-serif;
+    font-weight: 500;
+    color: #999999;
+    height: 20px;
+    cursor: pointer;
+    outline: none;
+    height: 24px;
+    -o-transition: background-position 200ms ease, opacity 60ms linear;
+    transition: background-position 200ms ease, opacity 60ms linear;
+    opacity: 0.7;
+    background-color: transparent;
+    padding: 0;
+    transform: translateY(-7px);
+    margin-right: 7px;
+}
+
+.audio-ext-button-download:hover {
+    opacity: 1;
+}
