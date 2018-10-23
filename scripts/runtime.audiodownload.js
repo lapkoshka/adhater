@@ -25,7 +25,7 @@ class MusicDownloader {
             console.log('trackData error, arm response:', body);
             return;
         }
-        const vkid = trackData[1];
+        const vkid = trackData[15] && trackData[15]['vk_id'];
         if (!vkid) {
             console.log('vk id error', vkid);
             return;

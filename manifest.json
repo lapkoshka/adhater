@@ -1,7 +1,7 @@
 {
   "name": "VK Freeloader",
   "description": "Блокировка рекламы и загрузка музыки в ВК",
-  "version": "2.0",
+  "version": "2.01",
   "icons": {
     "16": "favicons/16x16.png",
     "32": "favicons/32x32.png",
