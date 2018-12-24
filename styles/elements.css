@@ -2,6 +2,7 @@
 .wall_marked_as_ads,
 .ads_mark,
 ._ads_promoted_post_data_w,
+._ads_block_data_w,
 .ads_ads_news_wrap {
     display: none;
 }

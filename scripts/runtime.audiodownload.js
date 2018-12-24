@@ -1,5 +1,6 @@
 class MusicDownloader {
     download(audioData) {
+        // document.querySelectorAll('._audio_row_12591728_456239418')
         const data = JSON.parse(audioData);
         this._load(this._getTrackId(data));
     }
@@ -42,6 +43,10 @@ class MusicDownloader {
             console.log('unmaskedSrc error', unmaskedSrc);
         }
 
+        const duration = trackData[5];
+
+        this._getAudioInfoByUrl(unmaskedSrc, duration).
+            then(info => console.log(info));
         const artist = this._formatString(trackData[4]);
         const song = this._formatString(trackData[3]);
         const ext = this._getAudioExt(unmaskedSrc);
@@ -72,6 +77,31 @@ class MusicDownloader {
         const path = src.split('?')[0].split('.');
         return path[path.length -1];
     };
+
+    _getSizeOfRangedHttpRequest(xhr) {
+        const b = xhr.getResponseHeader("Content-Range");
+        const c = b.split(/[ -\/]/);
+        return parseInt(c[3])
+    };
+
+    _getAudioInfoByUrl(url, duration) {
+        return new Promise((resolve, reject) => {
+            const xhr = new XMLHttpRequest();
+            xhr.open('HEAD', url);
+            xhr.setRequestHeader('Range', 'bytes=0-0');
+            xhr.onload = evt => {
+                const size = this._getSizeOfRangedHttpRequest(xhr);
+                const h = 8 * size / 1024 / duration;
+                const j = Math.round(h / 32);
+                resolve({
+                    bitrate: Math.min(32 * j, 320),
+                    size: (size / 1024 / 1024).toFixed(0)
+                });
+            }
+            xhr.send();
+        });
+        
+    }
 
     /**
      * @param {string} e url 
@@ -133,7 +163,7 @@ class MusicDownloader {
             if (a && "http" === a.substr(0, 4)) return a
         }
         return e
-    }
-}
+    };
+};
 
 window.extension || (window.extension = {}), extension.runtime = new MusicDownloader();
