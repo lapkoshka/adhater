@@ -29,10 +29,16 @@ chrome.webRequest.onBeforeRequest.addListener(
     ['blocking']
 );
 
+
 chrome.runtime.onMessage.addListener(evt => {
     switch (evt.name) {
-        case 'data.audio':
-            extension.runtime.download(evt.value)
+        case 'download':
+            chrome.downloads.download({
+                url: evt.value.url,
+                filename: evt.value.filename,
+                conflictAction: "overwrite",
+                saveAs: false
+            })
             break;
         default:
             break;

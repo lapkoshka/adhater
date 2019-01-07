@@ -26,6 +26,51 @@
     margin-right: 7px;
 }
 
+.audio-ext-button-download:hover .audio-ext-button-download-info {
+    display: block;
+}
+
+.audio-ext-button-download-info::before {
+    position: absolute;
+    pointer-events: none;
+    border: solid transparent;
+    content: '';
+    height: 0;
+    width: 0;
+    top: 100%;
+    left: 20px;
+}
+
+.audio-ext-button-download-info {
+    display: none;
+    position: absolute;
+    top: -27px;
+    left: 0.1094px;
+    display: block;
+    background: #000000;
+    border-radius: 3px;
+    padding: 3px;
+    max-height: 17px;
+    width: 120px;
+    color: #ffffff;
+    font-weight: 400;
+    background: rgba(0, 0 ,0, .7);
+}
+
+.audio-ext-button-download-info::after {
+    position: absolute;
+    pointer-events: none;
+    border: solid transparent;
+    content: '';
+    height: 0;
+    width: 0;
+    border-width: 5px;
+    margin: 0 -5px;
+    border-top-color: rgba(0,0,0,.7);
+    left: 20px;
+    top: 20px;
+}
+
 .audio-ext-button-download:hover {
     opacity: 1;
 }

@@ -1,7 +1,7 @@
 {
   "name": "VK Freeloader",
   "description": "Блокировка рекламы и загрузка музыки в ВК",
-  "version": "2.02",
+  "version": "2.04",
   "icons": {
     "16": "favicons/16x16.png",
     "32": "favicons/32x32.png",
@@ -12,24 +12,29 @@
   "permissions": [
     "tabs", "http://*/*", "https://*/*", "contextMenus", "storage",  "webRequest", "webRequestBlocking", "downloads"
   ],
+
   "browser_action": {
       "default_title": "VK Freeloader",
       "default_popup": "popup.html"
   },
-    "background": {
-    "scripts": ["background.js", "scripts/runtime.audiodownload.js"]
+
+  "background": {
+    "scripts": ["background.js"]
   },
+
   "content_scripts": [
     {
       "matches": ["https://vk.com/*", "https://m.vk.com/*"],
       "css": ["styles/elements.css"],
-      "js": ["scripts/vk.dowloadbutton.js"],
+      "js": ["scripts/vk.dowloadbutton.js", "scripts/runtime.audiodownload.js"],
       "run_at": "document_end"
     }
   ],
+
   "web_accessible_resources": [
     "styles/elements.css",
     "scripts/vk.dowloadbutton.js"
   ],
+
   "manifest_version": 2
 }

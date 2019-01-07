@@ -1,8 +1,13 @@
 class MusicDownloader {
-    download(audioData) {
-        // document.querySelectorAll('._audio_row_12591728_456239418')
-        const data = JSON.parse(audioData);
-        this._load(this._getTrackId(data));
+    download(data) {
+        this._load(this._getTrackId(data))
+            .then(this._vkArmResponseHandler.bind(this))
+            .then(info => this.tryLoad(info.unmaskedSrc, info.filename))
+    }
+
+    getTrackInfo(data) {
+        return this._load(this._getTrackId(data))
+            .then(this._vkArmResponseHandler.bind(this));
     }
 
     _getTrackId(data) {
@@ -11,56 +16,71 @@ class MusicDownloader {
     }
     
     _load(trackId) {
-        const xhr = new XMLHttpRequest();
-        xhr.open('POST', 'https://vk.com/al_audio.php');
-        xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-        xhr.onload = evt => this._vkArmResponseHandler(xhr.responseText);
-        xhr.send(`act=reload_audio&al=1&ids=${trackId}`);
+        return new Promise((onResolve, onReject) => {
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', 'https://vk.com/al_audio.php');
+            xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+            xhr.onload = evt => onResolve(xhr.responseText);
+            xhr.send(`act=reload_audio&al=1&ids=${trackId}`);
+        })
     };
 
     _vkArmResponseHandler(body) {
-        const data = this._vkArmParse(body);
-        //TODO: forEach for many ids
-        const trackData = data[0];
-        if (!trackData) {
-            console.log('trackData error, arm response:', body);
-            return;
-        }
-        const vkid = trackData[15] && trackData[15]['vk_id'];
-        if (!vkid) {
-            console.log('vk id error', vkid);
-            return;
-        }
-    
-        const url = trackData[2];
-    
-        if (!url) {
-            console.log('url error', url);
-            return;
-        }
-        const unmaskedSrc = this._unmaskSrc(url, vkid);
-        if (!unmaskedSrc) {
-            console.log('unmaskedSrc error', unmaskedSrc);
-        }
+        return new Promise((onResolve, onReject) => {
+            const data = this._vkArmParse(body);
 
-        const duration = trackData[5];
+            //TODO: forEach for many ids
+            const trackData = data[0];
+            if (!trackData) {
+                onReject('trackData error, arm response:', body);
+                return;
+            }
+            const vkid = trackData[15] && trackData[15]['vk_id'];
+            if (!vkid) {
+                onReject('vk id error', vkid);
+                return;
+            }
+        
+            const url = trackData[2];
+        
+            if (!url) {
+                onReject('url error', url);
+                return;
+            }
+            const unmaskedSrc = this._unmaskSrc(url, vkid);
+            if (!unmaskedSrc) {
+                onReject('unmaskedSrc error', unmaskedSrc);
+            }
+    
+            const duration = trackData[5];
+    
 
-        this._getAudioInfoByUrl(unmaskedSrc, duration).
-            then(info => console.log(info));
-        const artist = this._formatString(trackData[4]);
-        const song = this._formatString(trackData[3]);
-        const ext = this._getAudioExt(unmaskedSrc);
-        const filename = `${artist} - ${song}.${ext}`;
-        this._tryLoad(unmaskedSrc, filename);
+            const artist = this._formatString(trackData[4]);
+            const song = this._formatString(trackData[3]);
+            const ext = this._getAudioExt(unmaskedSrc);
+            const filename = `${artist} - ${song}.${ext}`;
+
+            this._getAudioInfoByUrl(unmaskedSrc, duration).then(
+                fileInfo => onResolve({
+                    vkid,
+                    unmaskedSrc,
+                    duration,
+                    filename,
+                    bitrate: fileInfo.bitrate,
+                    size: fileInfo.size
+                })
+            )
+        });
     };
 
-    _tryLoad(url, filename) {
-        chrome.downloads.download({
-            url: url,
-            filename: filename,
-            conflictAction: "overwrite",
-            saveAs: false
-        })
+    tryLoad(url, filename) {
+        chrome.runtime.sendMessage({
+            name: 'download',
+            value: ({
+                url, 
+                filename
+            })
+        });
     };
 
     _vkArmParse(body) {
@@ -99,8 +119,7 @@ class MusicDownloader {
                 });
             }
             xhr.send();
-        });
-        
+        });  
     }
 
     /**
