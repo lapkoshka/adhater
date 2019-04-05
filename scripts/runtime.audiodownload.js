@@ -2,7 +2,7 @@ class MusicDownloader {
     download(data) {
         this._load(this._getTrackId(data))
             .then(this._vkArmResponseHandler.bind(this))
-            .then(info => this.tryLoad(info.unmaskedSrc, info.filename))
+            .then(info => this.tryLoad(info.src, info.filename))
     }
 
     getTrackInfo(data) {
@@ -51,19 +51,18 @@ class MusicDownloader {
             if (!unmaskedSrc) {
                 onReject('unmaskedSrc error', unmaskedSrc);
             }
+            const src = this._replacem3u8(unmaskedSrc);
     
             const duration = trackData[5];
-    
-
             const artist = this._formatString(trackData[4]);
             const song = this._formatString(trackData[3]);
-            const ext = this._getAudioExt(unmaskedSrc);
+            const ext = this._getAudioExt(src);
             const filename = `${artist} - ${song}.${ext}`;
 
-            this._getAudioInfoByUrl(unmaskedSrc, duration).then(
+            this._getAudioInfoByUrl(src, duration).then(
                 fileInfo => onResolve({
                     vkid,
-                    unmaskedSrc,
+                    src,
                     duration,
                     filename,
                     bitrate: fileInfo.bitrate,
@@ -100,6 +99,9 @@ class MusicDownloader {
 
     _getSizeOfRangedHttpRequest(xhr) {
         const b = xhr.getResponseHeader("Content-Range");
+        if (!b) {
+            return null;
+        }
         const c = b.split(/[ -\/]/);
         return parseInt(c[3])
     };
@@ -110,13 +112,18 @@ class MusicDownloader {
             xhr.open('HEAD', url);
             xhr.setRequestHeader('Range', 'bytes=0-0');
             xhr.onload = evt => {
+                const info = {
+                    bitrate: void 0,
+                    size: void 0
+                }
                 const size = this._getSizeOfRangedHttpRequest(xhr);
-                const h = 8 * size / 1024 / duration;
-                const j = Math.round(h / 32);
-                resolve({
-                    bitrate: Math.min(32 * j, 320),
-                    size: (size / 1024 / 1024).toFixed(0)
-                });
+                if (size) {
+                    const h = 8 * size / 1024 / duration;
+                    const j = Math.round(h / 32);
+                    info.bitrate = Math.min(32 * j, 320);
+                    info.size = (size / 1024 / 1024).toFixed(0);
+                }
+                resolve(info);
             }
             xhr.send();
         });  
@@ -183,6 +190,13 @@ class MusicDownloader {
         }
         return e
     };
+
+    _replacem3u8(value) {
+        const fragments = value.split('?extra')[0].replace('/index.m3u8', '.mp3').split('/');
+        fragments.splice(fragments.length - 2, 1);
+        return fragments.join('/');
+
+    }
 };
 
 window.extension || (window.extension = {}), extension.runtime = new MusicDownloader();
