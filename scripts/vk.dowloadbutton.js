@@ -53,7 +53,7 @@ function handleAudioRow(mutation) {
         
         const info = TRACKS[trackId] && TRACKS[trackId].info;
         if (info) {
-            extension.runtime.tryLoad(info.unmaskedSrc, info.filename);
+            extension.runtime.tryLoad(info.src, info.filename);
             return;
         }
 
@@ -63,14 +63,6 @@ function handleAudioRow(mutation) {
         });
     }
     actionsEl.insertBefore(button, actionsEl.firstChild);
-};
-
-function callIDontGiveAFuckButton() {
-    const promobutton = document.querySelector('.audio_promo__button');
-    if (promobutton) {
-        promobutton.innerText = 'Мне похуй';
-        promobutton.href = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ';
-    }
 };
 
 function createRemovableInfoBlock(info, parent) {
@@ -89,7 +81,7 @@ function createRemovableInfoBlock(info, parent) {
 
 const observer = new MutationObserver(evt => {
     const mutation = evt[0].target;
-    callIDontGiveAFuckButton();
+    renderPromotePost();
     handleAudioRow(mutation);
 });
 
