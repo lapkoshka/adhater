@@ -81,7 +81,6 @@ function createRemovableInfoBlock(info, parent) {
 
 const observer = new MutationObserver(evt => {
     const mutation = evt[0].target;
-    renderPromotePost();
     handleAudioRow(mutation);
 });
 
