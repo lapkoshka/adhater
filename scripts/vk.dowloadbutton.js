@@ -70,13 +70,19 @@ function createRemovableInfoBlock(info, parent) {
     const trackId = parent.attributes['data-full-id'].nodeValue;
     const dataAudio = parent.attributes['data-audio'].nodeValue;
 
-    trackInfo.innerText = `${info.bitrate}kbps ~ ${info.size}mb`;
+    trackInfo.innerText = `${info && info.bitrate || 'unknown'}kbps ~ ${info && info.size || 'unknown'}mb`;
     trackInfo.classList.add(INFOBLOCK_CLASSNAME);
     trackInfo.setAttribute('data-full-id', trackId);
     trackInfo.setAttribute('data-audio', dataAudio);
 
     parent.appendChild(trackInfo);
-    parent.onmouseleave = evt => delete parent.removeChild(trackInfo);
+    parent.onmouseleave = evt =>  {
+        try {
+            delete parent.removeChild(trackInfo);
+        } catch (err) {
+            console.log(err);
+        }
+    }
 }
 
 const observer = new MutationObserver(evt => {

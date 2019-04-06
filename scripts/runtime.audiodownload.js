@@ -3,11 +3,13 @@ class MusicDownloader {
         this._load(this._getTrackId(data))
             .then(this._vkArmResponseHandler.bind(this))
             .then(info => this.tryLoad(info.src, info.filename))
+            .catch(err => console.log(err));
     }
 
     getTrackInfo(data) {
         return this._load(this._getTrackId(data))
-            .then(this._vkArmResponseHandler.bind(this));
+            .then(this._vkArmResponseHandler.bind(this))
+            .catch(err => console.log(err));
     }
 
     _getTrackId(data) {
@@ -32,26 +34,26 @@ class MusicDownloader {
             //TODO: forEach for many ids
             const trackData = data[0];
             if (!trackData) {
-                onReject('trackData error, arm response:', body);
+                onReject('Отсутствует trackData, ответ сервера:' + body);
                 return;
             }
             const vkid = trackData[15] && trackData[15]['vk_id'];
             if (!vkid) {
-                onReject('vk id error', vkid);
+                onReject('Отсутсвует vk id');
                 return;
             }
         
             const url = trackData[2];
         
             if (!url) {
-                onReject('url error', url);
+                onReject('Отсутствует url');
                 return;
             }
             const unmaskedSrc = this._unmaskSrc(url, vkid);
             if (!unmaskedSrc) {
-                onReject('unmaskedSrc error', unmaskedSrc);
+                onReject('Отсутствует unmaskedSrc');
             }
-            const src = this._replacem3u8(unmaskedSrc);
+            const src = this._normalizeSrc(unmaskedSrc);
     
             const duration = trackData[5];
             const artist = this._formatString(trackData[4]);
@@ -59,16 +61,16 @@ class MusicDownloader {
             const ext = this._getAudioExt(src);
             const filename = `${artist} - ${song}.${ext}`;
 
-            this._getAudioInfoByUrl(src, duration).then(
-                fileInfo => onResolve({
-                    vkid,
-                    src,
-                    duration,
-                    filename,
-                    bitrate: fileInfo.bitrate,
-                    size: fileInfo.size
-                })
-            )
+            this._getAudioInfoByUrl(src, duration)
+                .then(fileInfo => onResolve({
+                        vkid,
+                        src,
+                        duration,
+                        filename,
+                        bitrate: fileInfo.bitrate,
+                        size: fileInfo.size
+                    })
+                ).catch(err => console.log(err));
         });
     };
 
@@ -85,7 +87,7 @@ class MusicDownloader {
     _vkArmParse(body) {
         let n = body.split("<!>")[5];
         n = n.replace("<!json>", "");
-        return JSON.parse(n)
+        return JSON.parse(n || "{}");
     }
 
     _formatString(str) {
@@ -191,9 +193,12 @@ class MusicDownloader {
         return e
     };
 
-    _replacem3u8(value) {
+    _normalizeSrc(value) {
         const fragments = value.split('?extra')[0].replace('/index.m3u8', '.mp3').split('/');
         fragments.splice(fragments.length - 2, 1);
+        if (/psv4/.test(fragments[2])) {
+            fragments[fragments.length - 2] = 'audios';
+        }
         return fragments.join('/');
     }
 };
