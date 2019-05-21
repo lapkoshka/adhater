@@ -1,10 +1,11 @@
+const isVkPage = url => /vk\.com/.test(url);
+
 chrome.tabs.onActivated.addListener(function tabUpdateListener(_, status) {
     chrome.tabs.query({
         'active': true,
         'lastFocusedWindow': true
     }, tabs => {
-        const isVkPage = /vk\.com/.test(tabs[0].url);
-        updateIcon(isVkPage);
+        updateIcon(isVkPage(tabs[0].url));
     });
 });
 
@@ -23,9 +24,9 @@ const badURLs = [
 
 chrome.webRequest.onBeforeRequest.addListener(
     details => {
-        return { cancel: true }
-    }, 
-    {'urls': badURLs},  
+        return { cancel: isVkPage(details.initiator) }
+    },
+    {'urls': badURLs},
     ['blocking']
 );
 
