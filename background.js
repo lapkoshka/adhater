@@ -17,20 +17,6 @@ function updateIcon(isVkPage) {
       });
 };
 
-const badURLs = [
-    '*://ad.mail.ru/*',
-     '*://vk.com/js/lib/px.js?ch=2'
-];
-
-chrome.webRequest.onBeforeRequest.addListener(
-    details => {
-        return { cancel: isVkPage(details.initiator) }
-    },
-    {'urls': badURLs},
-    ['blocking']
-);
-
-
 chrome.runtime.onMessage.addListener(evt => {
     switch (evt.name) {
         case 'download':
